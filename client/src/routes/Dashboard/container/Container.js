@@ -85,10 +85,16 @@ const totalHouseholdSegmentProps = {
   }
 }
 
+const tableSegmentProps = {
+  title: 'Households',
+  tableData: []
+}
+
 function Container() {
   const layoutProps = {
     averageHouseholdSegmentProps,
-    totalHouseholdSegmentProps
+    totalHouseholdSegmentProps,
+    tableSegmentProps
   }
   return (
     <Layout
