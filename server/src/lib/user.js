@@ -82,9 +82,23 @@ export const update = async (req, res) => {
 
 export const getUsers = async (req, res) => {
   const userID = req.body.id
-  const user = await findUserWhere({userID})
+  try {
+    if (userID) {
+      const user = await findUserWhere({userID})
 
-  return res.status(200).json(user)
+      return res.status(200).json(user)
+    } else {
+      const users = await db.User.findAll()
+
+      return res.status(200).json(users)
+    }
+  } catch (error) {
+    return res.status(400).json({
+      status: 400,
+      message: 'Could not retrieve user/s'
+    })
+  }
+
 }
 
 export const login = async (req, res) => {
