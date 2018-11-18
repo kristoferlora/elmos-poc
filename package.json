@@ -1,0 +1,26 @@
+{
+  "name": "electricity-monitoring-system",
+  "version": "1.0.0",
+  "description": "System that monitors electricty usage",
+  "author": "Kristofer Lora",
+  "license": "ISC",
+  "scripts": {
+    "postinstall": "node ./bin/client-install.js",
+    "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
+    "start-dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "start:server": "node ./bin/server-start.js",
+    "dev:client": "node ./bin/client-dev.js",
+    "dev:server": "node ./bin/server-dev.js",
+    "start:client": "node ./bin/client-start.js",
+    "build:client": "node ./bin/client-build.js"
+  },
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "dotenv": "^6.0.0",
+    "morgan": "^1.9.0"
+  },
+  "devDependencies": {
+    "concurrently": "^3.6.1",
+    "nodemon": "^1.18.3"
+  }
+}
