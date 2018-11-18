@@ -16,7 +16,7 @@ function Layout({
   tableSegmentProps
 }) {
   return (
-    <Grid divided>
+    <Grid divided stackable>
       <Grid.Row>
         <Grid.Column width={4}>
           <Container textAlign="center">

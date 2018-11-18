@@ -3,6 +3,8 @@ import moment from 'moment'
 
 import Layout from './Layout'
 
+import fetchData from '../../../common/utils/fetchData'
+import getServerURL from '../../../common/utils/getServerUrl'
 import colors from '../../../common/colors'
 
 const value = 287.739
@@ -26,8 +28,8 @@ const averageHouseholdSegmentProps = {
       10000
     ],
     minorTicks: 2,
-    width: 350,
-    height: 350,
+    width: 250,
+    height: 250,
     highlights: [
       {from: 0, to: 2000, color: 'rgba(0,0,255,.25)'},
       {from: 2000, to: 4000, color: 'rgba(255,0,225,.25)'},
@@ -67,8 +69,8 @@ const totalHouseholdSegmentProps = {
       100000
     ],
     minorTicks: 2,
-    width: 350,
-    height: 350,
+    width: 250,
+    height: 250,
     highlights: [
       {from: 0, to: 20000, color: 'rgba(0,0,255,.25)'},
       {from: 20000, to: 40000, color: 'rgba(255,0,225,.25)'},
@@ -86,21 +88,60 @@ const totalHouseholdSegmentProps = {
 }
 
 const tableSegmentProps = {
-  title: 'Households',
-  tableData: []
+  title: 'Households'
 }
 
-function Container() {
-  const layoutProps = {
-    averageHouseholdSegmentProps,
-    totalHouseholdSegmentProps,
-    tableSegmentProps
+class Container extends React.Component {
+  state = {
+    loading: false,
+    data: []
   }
-  return (
-    <Layout
-      {...layoutProps}
-    />
-  )
+
+  componentDidMount() {
+    this.getData()
+  }
+
+  getData = () => {
+    this.setState({
+      loading: true
+    }, async () => {
+      const URL = `${getServerURL()}/electricMeters`
+      try {
+        const data = await fetchData(URL)
+        this.setState({
+          data
+        })
+      } catch (error) {
+        console.log(error)
+      } finally {
+        this.setState({
+          loading: false
+        })
+      }
+    })
+  }
+
+  render() {
+    const {
+      data,
+      loading
+    } = this.state
+    const layoutProps = {
+      averageHouseholdSegmentProps,
+      totalHouseholdSegmentProps,
+      tableSegmentProps: {
+        tableSegmentProps,
+        loadingTableData: loading,
+        tableData: data && data.length > 0 ? data : []
+      }
+    }
+
+    return (
+      <Layout
+        {...layoutProps}
+      />
+    )
+  }
 }
 
 export default Container
