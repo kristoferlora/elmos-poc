@@ -9,6 +9,11 @@ import interceptor from 'express-interceptor'
 
 import db from './models'
 
+import {
+  userHandler,
+  electricMeterHandler
+} from './handler'
+
 // import authGuard from './lib/authGuard'
 // import login from './lib/login'
 
@@ -43,6 +48,9 @@ app.get('/api/info', async (req, res) => {
   })
 })
 
+app.use('/api/users', userHandler)
+app.use('/api/electricMeters', electricMeterHandler)
+
 // app.post('/api/login', login)
 
 // authentication middleware ===================================================
@@ -66,6 +74,7 @@ app.get('/api/info', async (req, res) => {
 // }))
 
 // Guarded routes ==============================================================
+
 
 const port = process.env.PORT
 
