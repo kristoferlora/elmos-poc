@@ -5,7 +5,6 @@
   "author": "Kristofer Lora",
   "license": "ISC",
   "scripts": {
-    "postinstall": "node ./bin/client-install.js",
     "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
     "start-dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "start:server": "node ./bin/server-start.js",
