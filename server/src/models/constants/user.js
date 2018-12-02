@@ -6,7 +6,8 @@
  * TYPES - available user types for the system
  */
 const TYPES = {
-  ADMIN: 'Admin'
+  ADMIN: 'Admin',
+  USER: 'User'
 }
 
 export {

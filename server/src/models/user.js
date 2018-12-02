@@ -4,6 +4,12 @@
 import uuid from 'uuid/v4'
 
 import {createModel} from './base'
+import {
+  createAdminUser,
+  createHouseholdUser
+} from '../seeder/user'
+
+import {TYPES} from './constants/user'
 
 export default createModel(
   'User',
@@ -39,8 +45,7 @@ export default createModel(
       },
       contactID: {
         field: 'contact_id',
-        type: types.STRING,
-        allowNull: false
+        type: types.STRING
       }
     }
   }, {
@@ -65,12 +70,29 @@ export default createModel(
         constraints: false
       })
     },
+    constants: {
+      TYPES
+    },
     setup: (User) => {
       Object.defineProperty(User.prototype, "name", {
         get: function() {
           return `${this.firstName} ${this.lastName}`
         }
       })
+    },
+    afterBulkSync: async (User, db) => {
+      const user = await User.findOne()
+      if (!user) {
+        const rows = []
+        rows.push(createAdminUser(db))
+        let i = 0
+        while(i < 20) {
+          rows.push(createHouseholdUser(db))
+          i++
+        }
+        await User.bulkCreate(rows)
+      }
+
     }
   }
 )
