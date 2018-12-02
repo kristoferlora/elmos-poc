@@ -14,10 +14,9 @@ import EmptyState from './EmptyState'
 function TableSegment({
   title,
   tableData,
-  loadingTableData
+  loadingTableData,
+  addHouseholdCallback
 }) {
-  const callback = () => null
-
   if (loadingTableData) {
     return (
       <Loader>Loading...</Loader>
@@ -28,7 +27,7 @@ function TableSegment({
     return (
       <EmptyState
         message="No Households managed."
-        callback={callback}
+        callback={addHouseholdCallback}
         callbackText="Add household"
       />
     )
@@ -44,13 +43,15 @@ function TableSegment({
 TableSegment.propTypes = {
   title: PropTypes.string,
   tableData: PropTypes.array,
-  loadingTableData: PropTypes.bool
+  loadingTableData: PropTypes.bool,
+  addHouseholdCallback: PropTypes.func
 }
 
 TableSegment.defaultProps = {
   title: null,
   tableData: [],
-  loadingTableData: true
+  loadingTableData: true,
+  addHouseholdCallback: () => null
 }
 
 export default TableSegment

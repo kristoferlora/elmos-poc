@@ -7,7 +7,7 @@ import fetchData from '../../../common/utils/fetchData'
 import getServerURL from '../../../common/utils/getServerUrl'
 import colors from '../../../common/colors'
 
-const value = 287.739
+const value = 0
 const averageHouseholdSegmentProps = {
   title: 'Average Household Consumption (KWH)',
   radialGaugeProps: {
@@ -55,7 +55,7 @@ const totalHouseholdSegmentProps = {
     minValue: 0,
     maxValue: 100000,
     units: 'KWH',
-    value: 44282.54,
+    value: 0,
     majorTicks: [
       10000,
       20000,
@@ -121,6 +121,11 @@ class Container extends React.Component {
     })
   }
 
+  addHouseholdCallback = () => {
+    const {history} = this.props
+    history.push('/add-household')
+  }
+
   render() {
     const {
       data,
@@ -132,7 +137,8 @@ class Container extends React.Component {
       tableSegmentProps: {
         tableSegmentProps,
         loadingTableData: loading,
-        tableData: data && data.length > 0 ? data : []
+        tableData: data && data.length > 0 ? data : [],
+        addHouseholdCallback: this.addHouseholdCallback
       }
     }
 

@@ -30,7 +30,11 @@ function Navbar({
     pathname
   } = location
   const {
-    dashboard
+    dashboard,
+    households,
+    addHousehold,
+    addUser,
+    users
   } = routes
   const matchesCurrentPath = (currentPathname) => {
     return pathname === currentPathname
@@ -49,6 +53,34 @@ function Navbar({
         active={matchesCurrentPath(dashboard.pathname)}
       >
         Dashboard
+      </Menu.Item>
+      <Menu.Item
+        as={Link}
+        to={households.pathname}
+        active={matchesCurrentPath(households.pathname)}
+      >
+        Households
+      </Menu.Item>
+      <Menu.Item
+        as={Link}
+        to={addHousehold.pathname}
+        active={matchesCurrentPath(addHousehold.pathname)}
+      >
+        Add Household
+      </Menu.Item>
+      <Menu.Item
+        as={Link}
+        to={users.pathname}
+        active={matchesCurrentPath(users.pathname)}
+      >
+        Users
+      </Menu.Item>
+      <Menu.Item
+        as={Link}
+        to={addUser.pathname}
+        active={matchesCurrentPath(addUser.pathname)}
+      >
+        Add User
       </Menu.Item>
       {
         isLoggedIn && (

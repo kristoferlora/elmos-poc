@@ -65,6 +65,7 @@ function Layout({
               key={route.name}
               path={route.pathname}
               component={route.component}
+              exact={route.exact}
               // isLoggedIn={isLoggedIn}
               // userType={userType}
             />
