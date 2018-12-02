@@ -17,8 +17,7 @@
   "dependencies": {
     "child_process": "^1.0.2",
     "dotenv": "^6.0.0",
-    "morgan": "^1.9.0",
-    "semantic-ui-css": "^2.4.1"
+    "morgan": "^1.9.0"
   },
   "devDependencies": {
     "concurrently": "^3.6.1",
