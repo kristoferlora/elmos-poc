@@ -14,8 +14,8 @@ import {
   electricMeterHandler
 } from './handler'
 
-// import authGuard from './lib/authGuard'
-// import login from './lib/login'
+import authGuard from './lib/authGuard'
+import {loginLib} from './lib'
 
 import {
   getHostname,
@@ -42,38 +42,39 @@ app.get('/api/info', async (req, res) => {
   res.set('Content-Type', 'application/json')
 
   res.send({
-    // commit: commitHash,
+    commit: commitHash,
     hostname,
     startTime
   })
 })
 
+app.post('/api/login', loginLib.login)
+
+
+// authentication middleware ===================================================
+app.use(authGuard)
+
+// inject new token if needed
+app.use(interceptor(function(req, res) {
+  const token = req.headers.authorization.split(' ')[1]
+  return {
+    isInterceptable: function(){
+      return req.authorized && /application\/json/.test(res.get('Content-Type'))
+    },
+    intercept: async function(body, send) {
+      const parsed = JSON.parse(body)
+      if (typeof parsed === 'object') {
+        parsed.token = await refreshToken(token)
+      }
+      send(JSON.stringify(parsed))
+    }
+  }
+}))
+
+// Guarded routes ==============================================================
 app.use('/api/users', userHandler)
 app.use('/api/electricMeters', electricMeterHandler)
 
-// app.post('/api/login', login)
-
-// authentication middleware ===================================================
-// app.use(authGuard)
-
-// inject new token if needed
-// app.use(interceptor(function(req, res) {
-//   const token = req.headers.authorization.split(' ')[1]
-//   return {
-//     isInterceptable: function(){
-//       return req.authorized && /application\/json/.test(res.get('Content-Type'))
-//     },
-//     intercept: async function(body, send) {
-//       const parsed = JSON.parse(body)
-//       if (typeof parsed === 'object') {
-//         parsed.token = await refreshToken(token)
-//       }
-//       send(JSON.stringify(parsed))
-//     }
-//   }
-// }))
-
-// Guarded routes ==============================================================
 
 
 const port = process.env.PORT
@@ -81,7 +82,7 @@ const port = process.env.PORT
 let listener
 let startTime
 let hostname
-// let commitHash
+let commitHash
 export const startApp = (callback) => {
   db.connect(() => {
     listener = app.listen(port, process.env.HOST, async () => {
@@ -90,7 +91,7 @@ export const startApp = (callback) => {
       }
       startTime = new Date()
       hostname = await getHostname()
-      // commitHash = await getCommit()
+      commitHash = await getCommit()
 
       const address = listener.address().address
       debug(`Server listening on http://${address}:${port}/ (PID ${process.pid})`)
