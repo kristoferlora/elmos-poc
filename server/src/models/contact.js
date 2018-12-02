@@ -49,7 +49,8 @@ export default createModel(
       },
       'recordTypeID': {
         field: 'record_type_id',
-        type: types.STRING
+        type: types.STRING,
+        allowNull: false
       },
       userID: {
         field: 'user_id',

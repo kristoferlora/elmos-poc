@@ -6,11 +6,7 @@ import debugLib from 'debug'
 import bcrypt from 'bcrypt'
 import moment from 'moment'
 
-import {
-  generateUserToken
-} from '../utils'
-
-const findUserWhere = (where) => {
+export const findUserWhere = (where) => {
   const user = db.User.findOne({where})
   return user
 }
@@ -97,28 +93,5 @@ export const getUsers = async (req, res) => {
       status: 400,
       message: 'Could not retrieve user/s'
     })
-  }
-
-}
-
-export const login = async (req, res) => {
-  const {username, password} = req.body
-
-  const user = await db.User.findUserWhere({username})
-
-  if (!user) {
-    throw new Error('Invalid username and password combination.')
-  }
-
-  const valid = await bcrypt.compare(password, user.passwort)
-
-  if (!valid) {
-    throw new Error('Invalid username and password combination')
-  }
-
-  const token = await generateUserToken(user)
-
-  return {
-    token
   }
 }

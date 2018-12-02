@@ -15,13 +15,13 @@ export default createModel(
         primaryKey: true,
         unique: true
       },
-      'month': {
-        field: 'month',
+      fromDate: {
+        field: 'from_date',
         type: types.STRING,
         allowNull: false
       },
-      'year': {
-        field: 'year',
+      toDate: {
+        field: 'to_date',
         type: types.STRING,
         allowNull: false
       },
@@ -30,10 +30,25 @@ export default createModel(
         type: types.DOUBLE,
         allowNull: false
       },
+      billableAmount: {
+        field: 'billable_amount',
+        type: types.DOUBLE,
+        defaultValue: 0
+      },
       electricMeterID: {
-        field: 'electricMeterID',
+        field: 'electric_meter_ID',
         type: types.STRING,
         allowNull: false
+      },
+      isBilled: {
+        field: 'is_billed',
+        type: types.BOOLEAN,
+        defaultValue: false
+      },
+      sentWarningEmail: {
+        field: 'sent_first_email',
+        type: types.BOOLEAN,
+        defaultValue: false
       }
     }
   }, {

@@ -27,25 +27,34 @@ export default createModel(
         type: types.STRING,
         allowNull: false
       },
-      'username': {
-        field: 'username',
-        type: types.STRING
-      },
       'password': {
         field: 'password',
-        type: types.STRING
+        type: types.STRING,
+        allowNull: false
       },
       'firstName': {
         field: 'first_name',
-        type: types.STRING
+        type: types.STRING,
+        allowNull: false
       },
       'lastName': {
         field: 'last_name',
-        type: types.STRING
+        type: types.STRING,
+        allowNull: false
       },
-      contactID: {
-        field: 'contact_id',
-        type: types.STRING
+      email: {
+        field: 'email',
+        type: types.STRING,
+        unique: true
+      },
+      consumptionLimit: {
+        field: 'consumption_limit',
+        type: types.DOUBLE
+      },
+      globalConsumptionLimit: {
+        field: 'global_consumption_limit',
+        type: types.BOOLEAN,
+        defaultValue: true
       }
     }
   }, {

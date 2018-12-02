@@ -40,7 +40,7 @@ export default createModel(
         field: 'total_consumption',
         type: types.DOUBLE,
         allowNull: false,
-        default: 0
+        defaultValue: 0
       },
       userID: {
         field: 'user_id',
@@ -62,7 +62,12 @@ export default createModel(
       },
       isDisconnected: {
         field: 'is_disconnected',
-        type: types.BOOLEAN
+        type: types.BOOLEAN,
+        defaultValue: false
+      },
+      billableAmountLimimt: {
+        field: 'billable_amount_limit',
+        type: types.DOUBLE
       }
     }
   },
