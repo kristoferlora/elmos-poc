@@ -8,10 +8,10 @@ import {hashPassword} from '../utils'
 export function createAdminUser(db) {
   const user = {
     recordTypeID: db.RecordType.User.ADMIN,
-    username: 'kristofer_lora',
     password: hashPassword('password1'),
     firstName: 'kristofer',
-    lastName: 'lora'
+    lastName: 'lora',
+    email: 'kristofer.lora@gmail.com'
   }
   return user
 }
@@ -19,10 +19,10 @@ export function createAdminUser(db) {
 export function createHouseholdUser(db) {
   const firstName = faker.name.firstName()
   const lastName = faker.name.lastName()
-  const username = `${firstName.toLowerCase()}_${lastName.toLowerCase()}`
+  const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@test.com`
   const user = {
     recordTypeID: db.RecordType.User.USER,
-    username,
+    email,
     firstName,
     lastName,
     password: hashPassword('password2')
