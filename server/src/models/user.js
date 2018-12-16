@@ -6,8 +6,10 @@ import uuid from 'uuid/v4'
 import {createModel} from './base'
 import {
   createAdminUser,
-  createHouseholdUser
-} from '../seeder/user'
+  createHouseholdUser,
+  createElectricMeter,
+  createMonthlyConsumption
+} from '../seeder'
 
 import {TYPES} from './constants/user'
 
@@ -47,14 +49,17 @@ export default createModel(
         type: types.STRING,
         unique: true
       },
-      consumptionLimit: {
-        field: 'consumption_limit',
-        type: types.DOUBLE
+      permanentAddress: {
+        field: 'permanent_address',
+        type: types.TEXT
       },
-      globalConsumptionLimit: {
-        field: 'global_consumption_limit',
-        type: types.BOOLEAN,
-        defaultValue: true
+      phone: {
+        field: 'phone',
+        type: types.STRING
+      },
+      mobilePhone: {
+        field: 'mobile',
+        type: types.STRING
       }
     }
   }, {
@@ -72,36 +77,46 @@ export default createModel(
         foreignKey: 'userID',
         constraints: false
       })
-      User.hasMany(db.Contact, {
-        as: 'contacts',
-        targetKey: 'userID',
-        foreignKey: 'userID',
-        constraints: false
-      })
     },
     constants: {
       TYPES
     },
-    setup: (User) => {
+    setup: (User, sequelize) => {
+      const db = sequelize.models
+
       Object.defineProperty(User.prototype, "name", {
         get: function() {
           return `${this.firstName} ${this.lastName}`
+        }
+      })
+      Object.defineProperty(User.prototype, "type", {
+        get: function() {
+          return db.RecordType.User.VALUES[this.recordType]
         }
       })
     },
     afterBulkSync: async (User, db) => {
       const user = await User.findOne()
       if (!user) {
-        const rows = []
-        rows.push(createAdminUser(db))
+        const userRows = []
+        const electricMeterRows = []
+        const monthlyConsumptions = []
+        userRows.push(createAdminUser(db))
         let i = 0
         while(i < 20) {
-          rows.push(createHouseholdUser(db))
+          const user = createHouseholdUser(db)
+          const electricMeter = createElectricMeter(user, db)
+
+          userRows.push(user)
+          electricMeterRows.push(electricMeter)
+          monthlyConsumptions.push(createMonthlyConsumption(electricMeter))
+
           i++
         }
-        await User.bulkCreate(rows)
+        await User.bulkCreate(userRows)
+        await db.ElectricMeter.bulkCreate(electricMeterRows)
+        await db.MonthlyConsumption.bulkCreate(monthlyConsumptions)
       }
-
     }
   }
 )

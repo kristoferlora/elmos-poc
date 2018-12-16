@@ -15,5 +15,7 @@ router.post("/create", userLib.create)
 router.post("/update/:id", userLib.update)
 // /users || /useres/uuid
 router.get("/:id?", userLib.getUsers)
+// /users/search
+router.post("/search", userLib.searchUser)
 
 module.exports = router

@@ -24,7 +24,7 @@ export const login = async (req, res) => {
     throw new Error('Invalid username and password combination')
   }
 
-  const token = await generateUserToken(user)
+  const token = await generateUserToken(user.toJSON())
 
   return res.status(200).json({
     token

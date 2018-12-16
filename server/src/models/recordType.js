@@ -9,8 +9,7 @@ import {
 } from './base'
 
 const OBJECTS = [
-  'User',
-  'Contact'
+  'User'
 ]
 
 export default createModel(
