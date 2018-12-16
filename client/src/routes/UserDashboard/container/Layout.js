@@ -72,7 +72,7 @@ function Layout({
 
               <p>
                 <span>
-                  Current PHP/kWH:
+                  Current PHP/WS:
                 </span>
                 &nbsp;5.35 PHP
               </p>

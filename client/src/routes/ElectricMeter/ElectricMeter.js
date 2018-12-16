@@ -93,7 +93,7 @@ class ElectricMeter extends React.Component {
                       <p>{from} - {to}</p>
                     </Grid.Column>
                     <Grid.Column>
-                      <p>Consumption: {bill.consumption} KWH</p>
+                      <p>Consumption: {bill.consumption} WS</p>
                     </Grid.Column>
                     <Grid.Column>
                       <p>Balance: {bill.billableAmount} PHP</p>
