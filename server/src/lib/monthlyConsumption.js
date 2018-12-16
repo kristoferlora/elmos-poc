@@ -104,15 +104,15 @@ export const update = async (req, res) => {
     })
   }
   try {
-    let electricMeter = await db.ElectricMeter.findOne({
+    const electricMeterModel  = await db.ElectricMeter.findOne({
       where: {
         serialKey
       }
     })
-    if (!electricMeter) {
+    if (!electricMeterModel) {
       throw new Error("No electric meter found")
     }
-    electricMeter = electricMeter.toJSON()
+    const electricMeter = electricMeterModel.toJSON()
 
     let settings = await db.Settings.findOne({
       where: {
@@ -139,9 +139,10 @@ export const update = async (req, res) => {
         billableAmount: getBillableAmount(monthlyConsumption.consumption, consumption, parseInt(settings.value)) // eslint-disable-line max-len
       })
     } else {
+      const newConsumption = consumption + monthlyConsumption.consumption
       monthlyConsumption = await monthlyConsumption.updateAttributes({
-        consumption: consumption + monthlyConsumption.consumption,
-        billableAmount: getBillableAmount(monthlyConsumption.previousMonthConsumption, consumption, parseFloat(settings.value)) // eslint-disable-line max-len
+        consumption: newConsumption,
+        billableAmount: getBillableAmount(monthlyConsumption.previousMonthConsumption, newConsumption, parseFloat(settings.value)) // eslint-disable-line max-len
       })
 
       if (monthlyConsumption.billableAmount >= electricMeter.billableAmountLimit) {
@@ -150,7 +151,7 @@ export const update = async (req, res) => {
       }
     }
 
-    await electricMeter.updateAttributes({
+    await electricMeterModel.updateAttributes({
       totalConsumption: electricMeter.totalConsumption + monthlyConsumption.consumption
     })
 
