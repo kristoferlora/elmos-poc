@@ -13,6 +13,9 @@ const getBillableAmount = (prevConsumption, currConsumption, charge) => {
   return (currConsumption - prevConsumption) * charge
 }
 
+/*
+ * Method for retrieving all monthly consumptions for a electric meter ID
+ */
 export const getAll = async (req, res) => {
   const {electricMeterID} = req.body
   if (!electricMeterID) {
@@ -49,6 +52,9 @@ export const getAll = async (req, res) => {
   }
 }
 
+/**
+ * Method for updating electric meter monthly consumption limit
+ */
 export const updateLimit = async (req, res) => {
   const {electricMeterID, newLimit} = req.body
   try {
@@ -59,7 +65,7 @@ export const updateLimit = async (req, res) => {
     })
     if (!electricMeter) {
       throw new Error('No bill with this ID')
-    }    
+    }
     electricMeter = await electricMeter.updateAttributes({
       billableAmountLimit: newLimit
     })
@@ -76,9 +82,21 @@ export const updateLimit = async (req, res) => {
   }
 }
 
+// const HOUR = 3600
+const VOLTAGE = 230
 // the public methods
+// consumption value is current
+// convert to Ws
+// unit is watt second
+/**
+ * Method for updating monthly consumption via IOT device
+ * @param req - http request
+ * @param res - http response
+ * @response {message} - values are SUCCESS, HALT
+ */
 export const update = async (req, res) => {
-  const {serialKey, consumption} = req.body
+  const {serialKey, consumption: wattage} = req.body
+  const consumption = VOLTAGE * wattage
   if (!serialKey) {
     return res.status(400).json({
       status: 400,
@@ -144,6 +162,10 @@ export const update = async (req, res) => {
   }
 }
 
+/*
+ * Method for checking if device should proceed recording current
+ * @returns {message} - can be PROCEED, HALT
+ */
 export const getStatus = async (req, res) => {
   const {serialKey} = req.body
   try {
