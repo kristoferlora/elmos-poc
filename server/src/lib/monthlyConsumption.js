@@ -96,7 +96,7 @@ const VOLTAGE = 230
  */
 export const update = async (req, res) => {
   const {serialKey, consumption: wattage} = req.body
-  const consumption = VOLTAGE * wattage
+  const consumption = VOLTAGE * wattage / 1000
   if (!serialKey) {
     return res.status(400).json({
       status: 400,

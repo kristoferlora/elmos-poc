@@ -11,7 +11,7 @@ export const averageHouseholdSegmentProps = {
   radialGaugeProps: {
     minValue: 0,
     maxValue: 1000,
-    units: 'WS',
+    units: 'KWS',
     value,
     majorTicks: [
       100,
@@ -49,7 +49,7 @@ export const totalHouseholdSegmentProps = {
   radialGaugeProps: {
     minValue: 0,
     maxValue: 10000,
-    units: 'WS',
+    units: 'KWS',
     value: 0,
     majorTicks: [
       1000,

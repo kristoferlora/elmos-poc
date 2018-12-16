@@ -72,7 +72,7 @@ function Layout({
 
               <p>
                 <span>
-                  Current PHP/WS:
+                  Current PHP/KWS:
                 </span>
                 &nbsp;5.35 PHP
               </p>
