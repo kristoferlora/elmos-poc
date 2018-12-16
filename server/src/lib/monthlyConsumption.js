@@ -149,6 +149,11 @@ export const update = async (req, res) => {
         return res.status(200).send('HALT')
       }
     }
+
+    await electricMeter.updateAttributes({
+      totalConsumption: electricMeter.totalConsumption + monthlyConsumption.consumption
+    })
+
     res.set('Content-Type', 'text/plain; charset=utf-8')
     return res.status(200).send('SUCCESS')
   } catch (error) {

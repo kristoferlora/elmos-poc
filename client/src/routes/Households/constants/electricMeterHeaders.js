@@ -1,6 +1,6 @@
 export const electricMeterHeaders = [
   'address',
-  'consumption',
+  'total_consumption',
   'billableAmountLimit',
   'billingStartDate',
   'billingEndDate',
