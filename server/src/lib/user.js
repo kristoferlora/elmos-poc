@@ -5,6 +5,9 @@ import db from '../models'
 import debugLib from 'debug'
 import bcrypt from 'bcrypt'
 import moment from 'moment'
+import isEmpty from 'lodash/isEmpty'
+
+import {hashPassword} from '../utils/user'
 
 const debug = debugLib('elmos-server:user')
 
@@ -14,44 +17,53 @@ export const findUserWhere = (query) => {
 }
 
 export const create = async (req, res) => {
-  const {
-    firstName,
-    lastName,
-    type,
-    username,
-    password,
-    permanentAddress,
-    phone,
-    serialKey,
-    billingStartDate,
-    billableAmountLimit
-  } = req.body
-
-  const userParams = {
-    firstName,
-    lastName,
-    type,
-    username,
-    password,
-    permanentAddress,
-    mobilePhone,
-    phone
-  }
-
-  let user = await db.User.create(userParams)
-
-  if (serialKey) {
-    const startDate = billingStartDate || moment().format('YYYY-MM-DD')
-    await db.ElectricMeter.create({
+  try {
+    const {
+      firstName,
+      lastName,
+      type,
+      email,
+      password,
+      permanentAddress,
+      phone,
       serialKey,
-      userID: user.userID,
-      billingStartDate: startDate,
-      address: permanentAddress,
-      billableAmountLimit: billableAmountLimit
+      billingStartDate,
+      billableAmountLimit
+    } = req.body
+
+    const userParams = {
+      firstName,
+      lastName,
+      type,
+      email,
+      password: hashPassword(password),
+      permanentAddress,
+      phone,
+      recordTypeID: db.RecordType.User[type]
+    }
+
+    let user = await db.User.create(userParams)
+
+    if (!isEmpty(serialKey)) {
+      const startDate = billingStartDate || moment().format('YYYY-MM-DD')
+      await db.ElectricMeter.create({
+        serialKey,
+        userID: user.userID,
+        billingStartDate: startDate,
+        address: permanentAddress,
+        billableAmountLimit: billableAmountLimit
+      })
+    }
+
+    return res.status(200).json(user)
+  } catch (error) {
+    debug(error)
+    return res.status(400).json({
+      status: 400,
+      message: `Something went wrong. ${error.message}`,
+      errors: error.errors
     })
   }
-
-  return res.status(200).json(user)
 }
 
 export const update = async (req, res) => {

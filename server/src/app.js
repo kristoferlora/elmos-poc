@@ -11,11 +11,15 @@ import db from './models'
 
 import {
   userHandler,
-  electricMeterHandler
+  electricMeterHandler,
+  monthlyConsumptionHandler
 } from './handler'
 
 import authGuard from './lib/authGuard'
-import {loginLib} from './lib'
+import {
+  loginLib,
+  monthlyConsumptionLib
+} from './lib'
 
 import {
   getHostname,
@@ -47,7 +51,8 @@ app.get('/api/info', async (req, res) => {
     startTime
   })
 })
-
+app.post('/api/iot-status', monthlyConsumptionLib.getStatus)
+app.post('/api/iot-update', monthlyConsumptionLib.update)
 app.post('/api/login', loginLib.login)
 
 
@@ -74,7 +79,7 @@ app.use(interceptor(function(req, res) {
 // Guarded routes ==============================================================
 app.use('/api/users', userHandler)
 app.use('/api/electricMeters', electricMeterHandler)
-
+app.use('/api/monthlyConsumptions', monthlyConsumptionHandler)
 
 
 const port = process.env.PORT

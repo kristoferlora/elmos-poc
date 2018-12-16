@@ -12,7 +12,7 @@ export default createModel(
       electricMeterID: {
         field: 'electric_meter_id',
         type: types.STRING,
-        default: uuid,
+        defaultValue: uuid,
         unique: true,
         primaryKey: true
       },

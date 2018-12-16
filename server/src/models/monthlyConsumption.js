@@ -25,6 +25,12 @@ export default createModel(
         type: types.STRING,
         allowNull: false
       },
+      previousMonthConsumption: {
+        field: 'previous_month_consumption',
+        type: types.DOUBLE,
+        allowNull: false,
+        defaultValue: 0
+      },
       'consumption': {
         field: 'consumption',
         type: types.DOUBLE,

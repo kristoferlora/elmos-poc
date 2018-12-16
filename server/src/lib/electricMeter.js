@@ -3,8 +3,11 @@
  */
 import db from '../models'
 import debugLib from 'debug'
-import bcrypt from 'bcrypt'
 import moment from 'moment'
+
+import {createMonthlyConsumption} from '../seeder'
+
+const debug = debugLib('ems-server:electricMeter')
 
 const findElectricMeterWhere = (where) => {
   const user = db.ElectricMeter.findOne({
@@ -18,19 +21,35 @@ const findElectricMeterWhere = (where) => {
 }
 
 export const create = async (req, res) => {
-  const {
-    serialKey,
-    userID,
-    billingStartDate
-  } = req.body
+  try {
+    const {
+      address,
+      serialKey,
+      user,
+      billingStartDate,
+      billableAmountLimit
+    } = req.body
 
-  let electricMeter = await db.ElectricMeter.create({
-    serialKey,
-    userID,
-    billingStartDate
-  })
+    const electricMeter = await db.ElectricMeter.create({
+      address,
+      serialKey,
+      userID: user,
+      billingStartDate,
+      billableAmountLimit
+    })
 
-  return res.status(200).json(electricMeter)
+    const monthlyConsumption = createMonthlyConsumption(electricMeter)
+
+    await db.MonthlyConsumption.create(monthlyConsumption)
+
+    return res.status(200).json(electricMeter)
+  } catch (error) {
+    return res.status(400).json({
+      status: 400,
+      message: 'Something went wrong.',
+      error: error.errors
+    })
+  }
 }
 
 export const update = async (req, res) => {
@@ -55,7 +74,10 @@ export const getElectricMeters = async (req, res) => {
         include: [{
           model: db.User,
           as: 'user'
-        }]
+        }],
+        order: [
+          ['createdDate', 'DESC']
+        ]
       })
 
       return res.status(200).json(ems)
