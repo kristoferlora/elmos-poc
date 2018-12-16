@@ -21,20 +21,10 @@ export default createModel(
         type: types.STRING,
         unique: true
       },
-      location: {
-        field: 'location',
+      address: {
+        field: 'address',
         type: types.STRING,
         allowNull: false
-      },
-      latitude: {
-        field: 'latitude',
-        type: types.DOUBLE,
-        defaultValue: 0
-      },
-      longitude: {
-        field: 'longitude',
-        type: types.DOUBLE,
-        defaultValue: 0
       },
       totalConsumption: {
         field: 'total_consumption',
@@ -65,7 +55,7 @@ export default createModel(
         type: types.BOOLEAN,
         defaultValue: false
       },
-      billableAmountLimimt: {
+      billableAmountLimit: {
         field: 'billable_amount_limit',
         type: types.DOUBLE
       }

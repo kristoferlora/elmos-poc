@@ -7,7 +7,13 @@ import bcrypt from 'bcrypt'
 import moment from 'moment'
 
 const findElectricMeterWhere = (where) => {
-  const user = db.ElectricMeter.findOne({where})
+  const user = db.ElectricMeter.findOne({
+    where,
+    include: [{
+      model: db.User,
+      as: 'user'
+    }]
+  })
   return user
 }
 
@@ -45,7 +51,12 @@ export const getElectricMeters = async (req, res) => {
 
       return res.status(200).json(em)
     } else {
-      const ems = await db.ElectricMeter.findAll()
+      const ems = await db.ElectricMeter.findAll({
+        include: [{
+          model: db.User,
+          as: 'user'
+        }]
+      })
 
       return res.status(200).json(ems)
     }
@@ -177,5 +188,28 @@ export const updateConsumption = async (req, res) => {
       message
     })
   }
+}
 
+export const getStats = async (req, res) => {
+  const startOfMonth = moment().startOf('month').format('YYYY-MM-DD')
+  const endOfMonth = moment().endOf('month').format('YYYY-MM-DD')
+
+  const monthlyConsumptionStats = await db.MonthlyConsumption.findAll({
+    where: {
+      createdDate: {
+        between: [startOfMonth, endOfMonth]
+      }
+    },
+    attributes: [[
+      db.sequelize.fn('COUNT', db.sequelize.col('monthly_consumption_id')), 'count'
+    ], [
+      db.sequelize.fn('SUM', db.sequelize.col('consumption')), 'sum'
+    ]]
+  })
+
+  let stats = monthlyConsumptionStats[0].toJSON()
+
+  stats.average = parseInt(stats.sum, 10) / parseInt(stats.count, 10)
+
+  return res.status(200).json(stats)
 }

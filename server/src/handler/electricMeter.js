@@ -9,11 +9,12 @@ import {
 
 const router = express.Router()
 
-// /electric-meter/create
+// /electricMeters/create
 router.post("/create", electricMeterLib.create)
-// /electric-meter/update
+// /electricMeters/update
 router.post("/update/:id", electricMeterLib.update)
-// /electric-meter || /useres/uuid
+// /electricMeters/stats
+router.get("/stats", electricMeterLib.getStats)
+// /electricMeters || /electricMeters/uuid
 router.get("/:id?", electricMeterLib.getElectricMeters)
-
 module.exports = router
