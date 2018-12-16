@@ -3,9 +3,9 @@ import {combineReducers} from 'redux'
 
 // Reducers
 import {userReducer} from '../user'
-// import {myStatsReducer} from '../myStats'
+import viewportReducer from '../viewport/reducer'
 
 export default combineReducers({
-  user: userReducer
-  // stats: myStatsReducer
+  user: userReducer,
+  viewport: viewportReducer
 })

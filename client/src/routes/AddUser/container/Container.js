@@ -18,11 +18,6 @@ class Container extends React.Component {
     }
   }
 
-  handleCreateUser = async (values) => {
-    const {createUser} = this.props
-    await createUser(values)
-  }
-
   addHouseholdCallback = () => {
     const {history} = this.props
     history.push('/add-household')
@@ -30,7 +25,6 @@ class Container extends React.Component {
 
   render() {
     const props = {
-      handleCreateUser: this.handleCreateUser,
       addHouseholdCallback: this.addHouseholdCallback
     }
     return (

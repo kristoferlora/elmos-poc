@@ -8,7 +8,7 @@ import {
   Divider
 } from 'semantic-ui-react'
 
-import {AddHouseholdForm} from '../components'
+import {ElectricMeterForm} from '../../../components'
 
 const {
   Row,
@@ -26,19 +26,19 @@ function Layout({
         <Column width={4}>
           <Container textAlign="left">
             <Segment>
-              Here you can add a household which should be connected to a user.
-              If the user does not exist, create a user by clicking the button below.
+              Here you can add an electric meter which should be connected to a user.
+              If the owner does not exist, create the owner by clicking the button below.
               <Divider />
               <Button
                 onClick={addUserCallback}
               >
-                Add Household Owner
+                Add Owner
               </Button>
             </Segment>
           </Container>
         </Column>
         <Column width={12}>
-          <AddHouseholdForm />
+          <ElectricMeterForm action="CREATE" />
         </Column>
       </Row>
     </Grid>

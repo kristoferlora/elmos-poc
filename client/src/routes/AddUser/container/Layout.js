@@ -10,8 +10,8 @@ import {
 } from 'semantic-ui-react'
 
 import {
-  AddUserForm
-} from '../components'
+  UserForm
+} from '../../../components'
 
 function Layout({
   addHouseholdCallback
@@ -22,19 +22,20 @@ function Layout({
         <Grid.Column width={4}>
           <Container textAlign="left">
             <Segment>
-              Here you can add a user, with his/her first household (optional).
-              If you need to add a household to a user, click here.
+              Here you can add a user, with his/her first meter (optional).
+              If you need to add a meter to a user, click here.
               <Divider />
               <Button
+                type="button"
                 onClick={addHouseholdCallback}
               >
-                Add Household
+                Add Electric Meter
               </Button>
             </Segment>
           </Container>
         </Grid.Column>
         <Grid.Column width={12}>
-          <AddUserForm />
+          <UserForm action="CREATE" />
         </Grid.Column>
       </Grid.Row>
     </Grid>

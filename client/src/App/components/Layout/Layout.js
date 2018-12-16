@@ -1,11 +1,10 @@
 // NPM Packages
 import React from 'react'
+import PropTypes from 'prop-types'
 import {
   Switch,
-  Route,
-  Redirect
+  Route
 } from 'react-router-dom'
-import PropTypes from 'prop-types'
 
 // Common constants
 import userTypes from '../../../common/constants/userTypes'
@@ -18,7 +17,6 @@ import {AppContent} from './styled'
 
 // Internal components
 import Navbar from './components/Navbar'
-// import AuthGuard from '../AuthGuard'
 
 const {
   ADMIN
@@ -35,11 +33,15 @@ function Layout({
   const getAppRoutes = (user, routesObj) => {
     const toArray = (obj) => Object.keys(obj).map((key) => obj[key])
 
-    if (user === ADMIN) {
+    if (user.toUpperCase() === ADMIN.toUpperCase()) {
       return toArray(routesObj)
     }
 
-    return toArray(routesObj).filter((route) => !route.adminOnly)
+    return toArray(routesObj).filter((route) => route.public)
+  }
+
+  const login = () => {
+    history.push('/login')
   }
 
   return (
@@ -48,26 +50,20 @@ function Layout({
         history={history}
         location={location}
         isLoggedIn={isLoggedIn}
+        login={login}
         onLogout={onLogout}
         userType={userType}
       />
       <AppContent>
         <Switch>
-          {
-            // <Redirect
-            //   from="/"
-            //   to={search.pathname}
-            //   exact
-            // />
-          }
           {getAppRoutes(userType, routes).map((route) => (
             <Route
               key={route.name}
               path={route.pathname}
               component={route.component}
               exact={route.exact}
-              // isLoggedIn={isLoggedIn}
-              // userType={userType}
+              isLoggedIn={isLoggedIn}
+              userType={userType}
             />
           ))}
         </Switch>

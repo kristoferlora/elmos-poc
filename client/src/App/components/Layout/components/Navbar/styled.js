@@ -27,4 +27,20 @@ export const Nav = styled(NavBase).attrs({
   .item:last-of-type {
     margin-right: 0 !important;
   }
+
+  &.vertical {
+    width: 100% !important;
+    position: absolute;
+    z-index: 1000;
+    top: 48px;
+    text-align: right;
+  }
+
+  button.ui.button {
+    padding-left: 0;
+    padding-right: 0;
+    border: none;
+    background: none;
+    color: #FFF;
+  }
 `

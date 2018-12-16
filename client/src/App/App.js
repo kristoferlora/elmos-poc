@@ -11,10 +11,10 @@ import PropTypes from 'prop-types'
 import userTypes from '../common/constants/userTypes'
 
 // Common utilities
-// import {authToken} from '../common/utils/auth'
+import {authToken} from '../common/utils/fetchData'
 
 // Internal components
-// import AuthGuard from './components/AuthGuard'
+import AuthGuard from './components/AuthGuard'
 import Layout from './components/Layout'
 
 const {
@@ -31,6 +31,8 @@ class App extends React.PureComponent {
     userType: PropTypes.oneOf([
       ADMIN,
       USER,
+      ADMIN.toUpperCase(),
+      USER.toUpperCase(),
       null
     ]),
     loginCheck: PropTypes.func,
@@ -45,16 +47,16 @@ class App extends React.PureComponent {
     logout: () => null
   }
 
-  // componentWillMount() {
-  //   const {
-  //     loginCheck
-  //   } = this.props
-  //   const token = authToken.get()
+  componentWillMount() {
+    const {
+      loginCheck
+    } = this.props
+    const token = authToken.get()
 
-  //   if (token) {
-  //     loginCheck(token)
-  //   }
-  // }
+    if (token) {
+      loginCheck(token)
+    }
+  }
 
   logout = () => {
     const {
@@ -78,13 +80,11 @@ class App extends React.PureComponent {
 
     return (
       <Switch>
-        {
-          /* <AuthGuard
+        <AuthGuard
           path="/login"
           isLoggedIn={isLoggedIn}
           exact
-          /> */
-        }
+        />
         <Route
           children={(routerProps) => { // eslint-disable-line react/no-children-prop
             return (

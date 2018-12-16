@@ -8,16 +8,12 @@ export const actionTypes = {
 }
 
 
-export function loginSuccess({
-  userType,
-  name
-}) {
+export function loginSuccess(payload) {
   return {
     type: actionTypes.LOGIN_SUCCESS,
     payload: {
       isLoggedIn: true,
-      userType,
-      name
+      ...payload
     }
   }
 }
@@ -53,5 +49,14 @@ export function logoutRequest() {
 export function logoutSuccess() {
   return {
     type: actionTypes.LOGOUT_SUCCESS
+  }
+}
+
+export function loginFailure(error) {
+  return {
+    type: actionTypes.LOGIN_FAILURE,
+    payload: {
+      error
+    }
   }
 }

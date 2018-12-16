@@ -91,4 +91,48 @@ injectGlobal`
     margin-left: auto;
     margin-right: auto;
   }
+
+  .ui.modal {
+    .header, .content {
+      background-color: ${colors.base03};
+    }
+  }
+
+  .ui.modal>.header {
+    color: ${colors.blue};
+  }
+
+  label {
+    color: ${colors.base3} !important;
+  }
+
+  table {
+    p {
+      color ${colors.base0};
+    }
+  }
+
+  .ui.header .sub.header {
+    color: ${colors.base3};
+  }
+
+  p {
+    color: ${colors.base3};
+  }
+
+  p > span {
+    color: ${colors.base0};
+  }
+
+  .ui.yellow.message {
+    padding: 0;
+    color: #b58105;
+    background: none;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    p {
+      color: #b58105;
+    }
+  }
 `

@@ -1,8 +1,10 @@
 import Dashboard from './Dashboard'
-import AddHousehold from './AddHousehold'
+import AddElectricMeter from './AddElectricMeter'
 import Households from './Households'
 import AddUser from './AddUser'
 import Users from './Users'
+import UserDashboard from './UserDashboard'
+import ElectricMeter from './ElectricMeter'
 
 const routes = {
   dashboard: {
@@ -11,15 +13,16 @@ const routes = {
     component: Dashboard,
     exact: true
   },
-  addHousehold: {
-    pathname: '/add-household',
-    name: 'add-household',
-    component: AddHousehold
+  addElectricMeter: {
+    pathname: '/add-electric-meter',
+    name: 'add-electric-meter',
+    component: AddElectricMeter
   },
-  households: {
-    pathname: '/households',
-    name: 'households',
-    component: Households
+  electricMeter: {
+    pathname: '/electric-meter',
+    name: 'electric-meter',
+    component: Households,
+    exact: true
   },
   users: {
     pathname: '/users',
@@ -30,6 +33,16 @@ const routes = {
     pathname: '/add-user',
     name: 'add-user',
     component: AddUser
+  },
+  userDashboard: {
+    pathname: '/my-dashboard',
+    name: 'user-dashboard',
+    component: UserDashboard
+  },
+  viewElectricMeter: {
+    pathname: '/electric-meter/:id',
+    name: 'view-electric-meter',
+    component: ElectricMeter
   }
 }
 

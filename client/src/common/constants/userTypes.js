@@ -1,6 +1,6 @@
 const userTypes = {
-  USER: 'USER',
-  ADMIN: 'ADMIN'
+  USER: 'User',
+  ADMIN: 'Admin'
 }
 
 export default userTypes

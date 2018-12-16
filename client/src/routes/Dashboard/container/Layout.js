@@ -2,8 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import {
-  Grid,
-  Container
+  Grid
 } from 'semantic-ui-react'
 import {
   GaugeSegment,
@@ -13,28 +12,32 @@ import {
 function Layout({
   averageHouseholdSegmentProps,
   totalHouseholdSegmentProps,
-  tableSegmentProps
+  tableSegmentProps,
+  loading
 }) {
+  if (loading) {
+    return <p>Loading...</p>
+  }
   return (
-    <Grid divided stackable>
-      <Grid.Row>
-        <Grid.Column width={4}>
-          <Container textAlign="center">
-            <GaugeSegment
-              {...averageHouseholdSegmentProps}
-            />
-            <GaugeSegment
-              {...totalHouseholdSegmentProps}
-            />
-          </Container>
+    <React.Fragment>
+      <Grid columns={2} stackable textAlign="center">
+        <Grid.Column>
+          <GaugeSegment
+            {...averageHouseholdSegmentProps}
+          />
         </Grid.Column>
-        <Grid.Column width={12}>
-          <Container>
-            <TableSegment {...tableSegmentProps} />
-          </Container>
+        <Grid.Column>
+          <GaugeSegment
+            {...totalHouseholdSegmentProps}
+          />
         </Grid.Column>
-      </Grid.Row>
-    </Grid>
+      </Grid>
+      <Grid columns={1}>
+        <Grid.Column>
+          <TableSegment {...tableSegmentProps} />
+        </Grid.Column>
+      </Grid>
+    </React.Fragment>
   )
 }
 

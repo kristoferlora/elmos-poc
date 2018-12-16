@@ -1,22 +1,32 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {
-  Container,
-  Segment
+  Segment,
+  Divider,
+  Header
 } from 'semantic-ui-react'
 
-import {EmptyState} from '../../../components'
+import {
+  EmptyState,
+  DataTable
+} from '../../../components'
+
+import {
+  electricMeterHeaders
+} from '../constants/electricMeterHeaders'
 
 function Layout({
   households,
-  loadingHouseholds,
-  addHouseholdCallback
+  loading,
+  addHouseholdCallback,
+  onRowClick
 }) {
-  if (loadingHouseholds) {
+  if (loading) {
     return (
       <p>loading...</p>
     )
   }
+
   if (!households || households.length < 1) {
     return (
       <EmptyState
@@ -26,27 +36,34 @@ function Layout({
       />
     )
   }
+
   return (
-    <Container>
-      <Segment>
-        HOuseholds
-      </Segment>
-    </Container>
+    <Segment>
+      <Header as="h2">Managed Households</Header>
+      <Divider />
+      <DataTable
+        headers={electricMeterHeaders}
+        data={households}
+        keyField="electricMeterID"
+        onRowClick={onRowClick}
+      />
+    </Segment>
   )
 }
 
 Layout.propTypes = {
   households: PropTypes.array,
-  loadingHouseholds: PropTypes.bool,
-  // refetchHouseholds: PropTypes.func,
-  addHouseholdCallback: PropTypes.func
+  loading: PropTypes.bool,
+  addHouseholdCallback: PropTypes.func,
+  onRowClick: PropTypes.func
 }
 
 Layout.defaultProps = {
   households: [],
-  loadingHouseholds: false,
+  loading: false,
   // refetchHouseholds: () => null,
-  addHouseholdCallback: () => null
+  addHouseholdCallback: () => null,
+  onRowClick: () => null
 }
 
 export default Layout

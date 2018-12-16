@@ -9,7 +9,7 @@ import {
 import reducer from './reducer'
 
 // Sagas
-// import watcher from './sagas'
+import watcher from './sagas'
 
 export const userActions = {
   loginRequest,
@@ -17,4 +17,4 @@ export const userActions = {
   logoutRequest
 }
 export const userReducer = reducer
-// export const userSagas = watcher
+export const userSagas = watcher

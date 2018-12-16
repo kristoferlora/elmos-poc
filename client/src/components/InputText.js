@@ -1,83 +1,106 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import isEmpty from 'lodash/isEmpty'
 import kebabCase from 'lodash/kebabCase'
-import startCase from 'lodash/startCase'
 
 import {
-  Label,
   Input
 } from 'semantic-ui-react'
 
-const InputWrapper = styled.div`
-  div.ui.label {
-    display: block;
-    width: fit-content;
-    background: none;
-    color: white;
-    padding-left: 0;
-  }
-  span {
-    margin-left: 0.5rem;
-    color: orange;
-  }
+// Common constant
+import inputTypes from '../common/constants/inputTypes'
 
-  div.ui.input {
-    width: 100%;
-  }
-`
+const {
+  TEXT,
+  PASSWORD,
+  NUMBER
+} = inputTypes
+
+const types = {
+  [TEXT]: 'text',
+  [NUMBER]: 'text',
+  [PASSWORD]: 'password'
+}
+
+const toFloat = (value) => {
+  return Number.isNaN(value) || !value ? 0 : Number.parseFloat(value)
+}
 
 function InputText({
   name,
-  secured,
+  onChange,
+  autoComplete,
   value,
-  error,
-  required
+  disabled,
+  placeholder,
+  onBlur,
+  onKeyPress,
+  asString,
+  type
 }) {
-  const type = secured ? 'text' : 'password'
+  const handleChange = (e, fieldName) => {
+    let newValue = e.target.value
+
+    if (type === NUMBER) {
+      const cleansedValue = newValue.replace(/[^0-9]/g, '')
+      const inputValue = asString
+        ? cleansedValue.toString()
+        : toFloat(cleansedValue)
+      newValue = inputValue
+    }
+
+    onChange(e, fieldName, newValue)
+  }
+
+  const onHandleChange = (e) => {
+    handleChange(e, name)
+  }
+
+  const handleBlur = () => {
+    onBlur(name)
+  }
+
   return (
-    <InputWrapper error={!isEmpty(error)}>
-      <Label
-        htmlFor={name}
-      >
-        {startCase(name)}
-        {
-          required
-          && (
-            <span>*</span>
-          )
-        }
-      </Label>
-      <Input
-        id={kebabCase(name)}
-        name={name}
-        type={type}
-        value={value}
-      />
-      {
-        !isEmpty(error)
-        && (
-          <p>Invalid input</p>
-        )
-      }
-    </InputWrapper>
+    <Input
+      type={types[type]}
+      id={kebabCase(name)}
+      autoComplete={autoComplete}
+      name={name}
+      value={value}
+      onChange={onHandleChange}
+      onBlur={handleBlur}
+      onKeyPress={onKeyPress}
+      disabled={disabled}
+      placeholder={placeholder}
+    />
   )
 }
 
 InputText.propTypes = {
   name: PropTypes.string.isRequired,
-  secured: PropTypes.bool,
+  onChange: PropTypes.func.isRequired,
+  autoComplete: PropTypes.string,
+  type: PropTypes.oneOf([
+    TEXT,
+    PASSWORD,
+    NUMBER
+  ]),
   value: PropTypes.any,
-  error: PropTypes.string,
-  required: PropTypes.bool
+  disabled: PropTypes.bool,
+  placeholder: PropTypes.string,
+  onBlur: PropTypes.func,
+  onKeyPress: PropTypes.func,
+  asString: PropTypes.bool
 }
 
 InputText.defaultProps = {
-  secured: false,
+  autoComplete: 'nope',
+  type: TEXT,
   value: '',
-  error: null,
-  required: false
+  disabled: false,
+  placeholder: null,
+  onBlur: () => null,
+  onKeyPress: () => null,
+  asString: false
 }
 
 export default InputText

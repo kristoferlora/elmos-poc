@@ -4,18 +4,21 @@ import {
   Divider,
   Segment,
   Header,
-  Table,
   Loader
 } from 'semantic-ui-react'
 
 import EmptyState from './EmptyState'
+import {electricMeterHeaders} from
+  '../../Households/constants/electricMeterHeaders'
+import {DataTable} from '../../../components'
 
 
 function TableSegment({
   title,
   tableData,
   loadingTableData,
-  addHouseholdCallback
+  addHouseholdCallback,
+  onRowClick
 }) {
   if (loadingTableData) {
     return (
@@ -32,10 +35,17 @@ function TableSegment({
       />
     )
   }
+
   return (
     <Segment>
       <Header as="h2">{title}</Header>
       <Divider />
+      <DataTable
+        headers={electricMeterHeaders}
+        data={tableData}
+        keyField="electricMeterID"
+        onRowClick={onRowClick}
+      />
     </Segment>
   )
 }
@@ -44,14 +54,16 @@ TableSegment.propTypes = {
   title: PropTypes.string,
   tableData: PropTypes.array,
   loadingTableData: PropTypes.bool,
-  addHouseholdCallback: PropTypes.func
+  addHouseholdCallback: PropTypes.func,
+  onRowClick: PropTypes.func
 }
 
 TableSegment.defaultProps = {
-  title: null,
+  title: 'Managed Households',
   tableData: [],
   loadingTableData: true,
-  addHouseholdCallback: () => null
+  addHouseholdCallback: () => null,
+  onRowClick: () => null
 }
 
 export default TableSegment
