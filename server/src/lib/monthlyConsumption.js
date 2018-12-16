@@ -152,7 +152,7 @@ export const update = async (req, res) => {
     }
 
     await electricMeterModel.updateAttributes({
-      totalConsumption: electricMeter.totalConsumption + monthlyConsumption.consumption
+      totalConsumption: electricMeter.totalConsumption + consumption
     })
 
     res.set('Content-Type', 'text/plain; charset=utf-8')
