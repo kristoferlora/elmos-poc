@@ -145,14 +145,12 @@ export const update = async (req, res) => {
       })
 
       if (monthlyConsumption.billableAmount >= electricMeter.billableAmountLimit) {
-        return res.status(200).json({
-          message: 'HALT'
-        })
+        res.set('Content-Type', 'text/plain; charset=utf-8')
+        return res.status(200).send('HALT')
       }
     }
-    return res.status(200).json({
-      message: 'SUCCESS'
-    })
+    res.set('Content-Type', 'text/plain; charset=utf-8')
+    return res.status(200).send('SUCCESS')
   } catch (error) {
     return res.status(400).json({
       status: 400,
@@ -183,13 +181,11 @@ export const getStatus = async (req, res) => {
       ]
     })
     if (monthlyConsumption.billableAmount < electricMeter.billableAmountLimit) {
-      return res.status(200).json({
-        message: 'PROCEED'
-      })
+      res.set('Content-Type', 'text/plain; charset=utf-8')
+      return res.status(200).send('PROCEED')
     }
-    return res.status(200).json({
-      message: 'HALT'
-    })
+    res.set('Content-Type', 'text/plain; charset=utf-8')
+    return res.status(200).send('HALT')
   } catch (error) {
     return res.status(400).json({
       status: 400,
