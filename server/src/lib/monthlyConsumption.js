@@ -145,10 +145,10 @@ export const update = async (req, res) => {
         billableAmount: getBillableAmount(monthlyConsumption.previousMonthConsumption, newConsumption, parseFloat(settings.value)) // eslint-disable-line max-len
       })
 
-      if (monthlyConsumption.billableAmount >= electricMeter.billableAmountLimit) {
-        res.set('Content-Type', 'text/plain; charset=utf-8')
-        return res.status(200).send('HALT')
-      }
+    }
+    if (monthlyConsumption.billableAmount >= electricMeter.billableAmountLimit) {
+      res.set('Content-Type', 'text/plain; charset=utf-8')
+      return res.status(200).send('HALT')
     }
 
     await electricMeterModel.updateAttributes({
