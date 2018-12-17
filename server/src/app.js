@@ -38,7 +38,7 @@ app.use(helmet())
 
 // public routes ===============================================================
 app.get('/api', (req, res) => {
-  res.send('Welcome! You are now accessing the spark-plug api.')
+  res.send('Welcome! You are now accessing the elmos api.')
 })
 
 // server information
